@@ -11,7 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 # Add packages and read in data 
 library(tidyverse)
 library(janitor)
-library(palmerpenguins)
 library(here)
 
 #for PCA
@@ -42,7 +41,7 @@ The data used for this project is miscellaneous environmental and climatic varia
 
 #PCA:
 world_climate_pca <- world_env_var %>% 
-  select(elevation, ends_with("cover"), ends_with("annual")) %>% 
+  select(cropland_cover, tree_canopy_cover, elevation, ends_with("annual")) %>% 
   drop_na() %>%
   scale() %>%  #values have been scaled
   prcomp() #now a list containing information 
@@ -50,7 +49,7 @@ world_climate_pca <- world_env_var %>%
 world_climate_pca$rotation #brings up loading for variables 
 
 world_climate_complete <- world_env_var %>% 
-  drop_na(elevation,ends_with("cover"), ends_with("annual")) 
+  drop_na(cropland_cover, tree_canopy_cover, elevation, ends_with("annual")) 
 
 #Make a Biplot: 
 autoplot(world_climate_pca,
