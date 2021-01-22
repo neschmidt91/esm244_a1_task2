@@ -7,12 +7,56 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+# Add packages and read in data 
+library(tidyverse)
+library(janitor)
+library(palmerpenguins)
+library(here)
+
+#for PCA
+library(ggfortify)
+
+# For ggplot customization
+library(readxl)
+library(gghighlight)
+library(lubridate)
+library(plotly)
+
+world_env_var <- read_csv("world_env_vars.csv")
+ 
+
 ```
 
 #### 1. useful descriptive introductory summary (3 - 4 sentences) that helps the audience understand the data (include a citation as necessary) and what you’ll be exploring
 
 ```{r}
 #All of your organized and well-annotated code (with warnings/messages suppressed) you wrote to wrangle data then run PCA, and to create a professional looking PCA biplot that appears (with a caption) in your knitted HTML
+
+#Wrangle data then run PCA
+
+world_climate_pca <- world_env_var %>% 
+  select(elevation,cropland_cover, ends_with("cover"), ends_with("annual")) %>% 
+  drop_na() %>%
+  scale() %>%  #values have been scaled
+  prcomp() #now a list containing information 
+
+world_climate_pca$rotation #brings up loading for variables 
+
+world_climate_complete <- world_env_var %>% 
+  drop_na(elevation, cropland_cover, ends_with("cover"), ends_with("annual")) 
+
+autoplot(world_climate_pca,
+         data = world_climate_complete,
+         colour = 'Country',
+         loadings = TRUE,
+         loadings.label = TRUE)+
+  theme_bw()+
+  theme(legend.position = 'none')
+# autopilot function understands outcomes from data analysis to create plot that it assumes you want to make 
+
+
+
 ```
 
 #### A brief summary (nicely formatted and professionally written bulletpoints are fine) highlighting some major takeaways from your PCA that can be gleaned from the biplot
