@@ -50,7 +50,11 @@ autoplot(world_climate_pca,
          data = world_climate_complete,
          colour = 'Country',
          loadings = TRUE,
-         loadings.label = TRUE)+
+         loadings.label = TRUE,
+         loadings.colour = "black",
+         loadings.label.colour = "black",
+         loadings.label.vjust = 1,
+         loadings.label.hjust = -.15)+
   theme_bw()+
   theme(legend.position = 'none')
 # autopilot function understands outcomes from data analysis to create plot that it assumes you want to make 
