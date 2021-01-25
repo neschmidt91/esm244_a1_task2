@@ -29,7 +29,7 @@ world_env_var <- read_csv("world_env_vars.csv")
 
 #### 1. Introduction
 
-The data used for this project is miscellaneous environmental and climatic variables that are are described within countries. For the purpose of this project I am exploring the variance between elevation, cropland cover, tree canopy cover, mean annual rainfall, and mean annual temperature  This data was compiled by Zander Venter and acquired from Google Earth Engine.
+The data used for this project describes miscellaneous environmental and climatic variables for 247 countries. For the purpose of this project I am exploring the variance between cropland cover, tree canopy cover, mean annual rainfall, mean annual temperature, rain seasonality, temperature seasonality. This data was compiled by Zander Venter and acquired from Google Earth Engine.
 
 
 ```{r, message = FALSE, warning = FALSE}
@@ -39,9 +39,11 @@ The data used for this project is miscellaneous environmental and climatic varia
 # is it better to keep all countries or is it possible to filter and explore?
 #within the top 5 carbon emitting countries, China, United States of America, India, Russia, and Japan (Union of Concerned Scientists, 2020). citation: https://www.ucsusa.org/resources/each-countrys-share-co2-emissions
 
+#PCA helps to figure out which variables are important 
+
 #PCA:
 world_climate_pca <- world_env_var %>% 
-  select(cropland_cover, tree_canopy_cover, elevation, ends_with("annual")) %>% 
+  select(cropland_cover, tree_canopy_cover, elevation, ends_with("annual"), rain_seasonailty, temp_seasonality) %>% 
   drop_na() %>%
   scale() %>%  #values have been scaled
   prcomp() #now a list containing information 
@@ -49,7 +51,7 @@ world_climate_pca <- world_env_var %>%
 world_climate_pca$rotation #brings up loading for variables 
 
 world_climate_complete <- world_env_var %>% 
-  drop_na(cropland_cover, tree_canopy_cover, elevation, ends_with("annual")) 
+  drop_na(cropland_cover, tree_canopy_cover, elevation, ends_with("annual"), rain_seasonailty, temp_seasonality) 
 
 #Make a Biplot: 
 autoplot(world_climate_pca,
